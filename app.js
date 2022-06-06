@@ -1,19 +1,28 @@
-// endpoitn => c'est la route
+// endpoint => c'est la route
 const express = require('express');
 const app = express();
 require('dotenv').config();
 const chalk = require('chalk');
-const progressBar = require('progress');
-const {DB_USERNAME, DB_PASS} = process.env;
-const eleves= [
-    {name: "tech",age:20},
-    {name: "Zola",age:32},
-    {name: "cheikh",age:21},
-]
-app.get('/choix',(req,res) =>{
-    res.send(eleves);
-});
-app.listen(4000,()=>{
-    console.log('le server listening on '+ chalk.green(chalk.underline('localhost:4000')));
+const ProgressBar = require('progress');
+const Files = require('fileworkdiokou');
+const {DB_USERNAME, DB_PASS,PORT} = process.env;
+// defin routes for the apis 
+// require('./api/modules/clients/clients.routes')(app);
+  //AUTOLOAD ROUTES
+  var routes = Files.walk(__dirname + '/modules');
+  for (var i = 0; i < routes.length; i++)
+    if (routes[i].indexOf('routes') !== -1){
+        require(routes[i])(app);
+    }
+
+app.listen(PORT,()=>{
+    console.log('le server listening on '+ chalk.green(chalk.underline('localhost:'+PORT)) );
 })
+// const bar = new ProgressBar(':bar',{total: 50});
+// const timer = setInterval(()=>{
+//     bar.tick();
+//     if(bar.complete){
+//         clearInterval();
+//     }
+// },100);
 console.log(DB_USERNAME,' ',DB_PASS);
