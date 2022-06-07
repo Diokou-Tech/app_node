@@ -15,14 +15,13 @@ module.exports.getOne = (req,res)=>{
 }
 module.exports.addClient = (req,res)=>{
     let cl = req.body;
-    console.log(cl);
-    console.log('add client');
+    clients.push(cl);
+    res.send({statut : true,message: 'Ajout avec succès du client !', data : clients});
 }
 module.exports.deleteClient = (req,res)=>{
-    let id = req.params.id;
-    console.log(id);
-    console.log('delete client');
-    res.send({ddelete : true});
+    let  indexElement = clients.findIndex((cl)=> cl.id == req.params.id );
+    clients.splice(indexElement,1);
+    res.send({statut : true,message: 'Votre client a ete supprimé avec succès !', data : clients});
 }
 module.exports.updateClient =(req,res)=>{
     console.log('update client !');
