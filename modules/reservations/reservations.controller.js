@@ -33,6 +33,8 @@ module.exports.deleteOne =  function(req,res){
 }
 
 module.exports.insertOne =  (req,res) => {
-    reservations.push(req.body);
-    res.send(produits);
+    console.log({user : req.user});
+    const reservation = {...req.body,clientId: req.user.id};
+    reservations.push(reservation);
+    res.send(reservations);
 }
