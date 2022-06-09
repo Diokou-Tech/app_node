@@ -1,5 +1,6 @@
 const ServiceUser = require('./../users/users.service');
 const JWT = require('jsonwebtoken');
+const KeySecret = process.env.KEY_SECRET;
 module.exports.register = function({name,username, password}){
     return ServiceUser.insertOne({name,username,password});
 }
@@ -11,11 +12,10 @@ module.exports.login = function({username, password}){
         user = { ...user };
         // delete password for the browser
         delete user.password;
-        console.log(user);
         // create a token
-        const token = JWT.sign(user,'diokoutechkey',{expiresIn: 60*60});
+        console.log(KeySecret);
+        const token = JWT.sign(user,KeySecret,{expiresIn:'2h'});
         return { user,token};
-        console.log('loggin');
         // return (!user || user.password == password) ? null: user;
     }
 }

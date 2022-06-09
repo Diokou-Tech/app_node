@@ -9,23 +9,26 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 const { DB_USERNAME, DB_PASS, PORT } = process.env;
-// defin routes for the apis
+
 // require('./api/modules/clients/clients.routes')(app);
+
 //AUTOLOAD ROUTES
 var routes = Files.walk(__dirname + "/modules");
-// import publics routes 
+//IMPORT THE PUBLIC ROUTES 
 for (var i = 0; i < routes.length; i++)
   if (routes[i].indexOf("public.routes") !== -1) require(routes[i])(app);
-// use the gard /middleware
+
+// USE THE GARDE / MIDDLEWARE
 require("./modules/auth/auth.gard")(app);
+
+//IMPORT ROUTES PRIVATES
 for (var i = 0; i < routes.length; i++)
-// import privates routes 
   if (
     routes[i].indexOf("routes") !== -1 &&
     routes[i].indexOf("public.routes") == -1
   )
     require(routes[i])(app);
-
+// LANCH APP SERVER
 app.listen(PORT, () => {
   console.log(
     "le server listening on " +
