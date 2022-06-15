@@ -5,14 +5,24 @@ require("dotenv").config();
 const chalk = require("chalk");
 const ProgressBar = require("progress");
 const Files = require("fileworkdiokou");
+const mongoose = require('mongoose');
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-const { DB_USERNAME, DB_PASS, PORT } = process.env;
+const { DB_URI, PORT } = process.env;
+// add connect database
+mongoose.connect(DB_URI).then((result)=>
+{
+  console.log('Connexion database en cours !');
+  initApp();
+}).catch((error)=>
+{
+  console.log('connexion to database impossible ' + error)
+});
+function initApp(){
 
-// require('./api/modules/clients/clients.routes')(app);
-
-//AUTOLOAD ROUTES
+  // require('./api/modules/clients/clients.routes')(app);
+  //AUTOLOAD ROUTES
 var routes = Files.walk(__dirname + "/modules");
 //IMPORT THE PUBLIC ROUTES 
 for (var i = 0; i < routes.length; i++)
@@ -35,11 +45,11 @@ app.listen(PORT, () => {
       chalk.green(chalk.underline("localhost:" + PORT))
   );
 });
-console.log(DB_USERNAME, " ", DB_PASS);
 // const bar = new ProgressBar(':bar',{total: 5});
 // const timer = setInterval(()=>{
-//     bar.tick();
+  //     bar.tick();
 //     if(bar.complete){
 //         clearInterval();
 //     }
 // },100);
+}
