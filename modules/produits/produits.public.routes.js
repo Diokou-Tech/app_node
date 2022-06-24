@@ -3,6 +3,6 @@ module.exports = function(app){
 // definition des routes 
     app.route('/produits')
         .get(Ctrl.getAllProduct)
-    app.route('/produits/:id')
+    app.route('/produits/:name')
         .get(Ctrl.getOneProduct)
 }

@@ -1,35 +1,29 @@
-const produits = [
-    { id : 1,name: 'iphone 12 pro',description: 'phone use off !'},
-    { id : 2,name: 'iphone 8',description: 'phone use off !'},
-    { id : 3,name: 'iphone X Air ',description: 'phone use off !'},
-];
+const modelProduct = require('./product.schema');
 
-module.exports.produits = produits;
-
-module.exports.getAllProduct = (req,res)=>{
+module.exports.getAllProduct = async (req,res)=>{
     console.log('get All products');
-    res.send(produits);
+    let all_products = await modelProduct.find({});
+    res.send(all_products);
 }
-module.exports.getOneProduct = function(req,res){
+module.exports.getOneProduct = async function(req,res){
     console.log('get one product');
-    res.send(produits.find((pr)=> pr.id == req.params.id));
+    let  product = await modelProduct.findOne({name : req.params.name})
+    res.send(product);
 }
-module.exports.saveProduct = (req,res)=>{
+module.exports.saveProduct = async (req,res)=>{
     let product = req.body;
-    console.log(product);
     if(product != null){
-        produits.push(product);
-        console.log('save products');
-        res.send({data: produits})
+       modelProduct.create(product);
+    let all_products = await modelProduct.find({});
+        res.send(all_products);
     }else{
         res.send({statut:false,message: 'impossible d\'ajouter un produit vide !'})
     }
 }
-module.exports.deleteProduct = (req,res)=>{
+module.exports.deleteProduct =async (req,res)=>{
     console.log('delete products');
-    let indexElement = produits.findIndex((pr)=> pr.id == req.params.id);
-    produits.splice(indexElement,1);
-    res.send({statut:true,message: 'suppression du produit avec succes !',data: produits})
+    let product = await modelProduct.deleteOne({name : req.params.name});
+    res.send({statut:true,message: 'suppression du produit avec succes !',data: product})
 }
 module.exports.updateProduct = (req,res)=>{
     console.log('update products');

@@ -9,17 +9,18 @@ const mongoose = require('mongoose');
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-const { DB_URI, PORT } = process.env;
+const { DB_URI,DB_URI_ONLINE,PORT } = process.env;
 // add connect database
 mongoose.connect(DB_URI).then((result)=>
 {
   console.log('Connexion database en cours !');
-  initApp();
+  boostrap();
 }).catch((error)=>
 {
-  console.log('connexion to database impossible ' + error)
+  console.log(chalk.red('Error connexion to database ' + error))
 });
-function initApp(){
+
+function boostrap(){
 
   // require('./api/modules/clients/clients.routes')(app);
   //AUTOLOAD ROUTES

@@ -3,7 +3,7 @@ module.exports = function(app){
 // definition des routes 
     app.route('/produits')
         .post(Ctrl.saveProduct);
-    app.route('/produits/:id')
+    app.route('/produits/:name')
         .delete(Ctrl.deleteProduct)
         .put(Ctrl.updateProduct);
 }
